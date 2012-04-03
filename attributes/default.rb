@@ -20,4 +20,9 @@
 # specify a default version for now.  https://pear.php.net/bugs/bug.php?id=19138
 # TODO: implement preferred_state attribute and logic once pear bug is fixed
 
-default[:drush][:version] = "4.5.0"
+# Options: pear, git
+default['drush']['install_method'] = "pear"
+
+# When installing via pear, this is the x.y.z pear version (ie. 4.5.0)
+# When installing via git, this is a commit/tag/branch reference (ie. 6e4c1e22f0b / 7.x-4.5 / 7.x-4.x)
+default['drush']['version'] = "4.5.0"

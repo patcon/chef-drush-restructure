@@ -21,6 +21,7 @@ include_recipe "drush"
 
 # Install drush_make
 # TODO: come up with a way to allow users to update drush_make
+# TODO: Add logic for not_if drush5 as well.
 execute "install_drush_make" do
   command "drush dl drush_make-#{node[:drush][:make][:version]} --destination=#{node[:drush][:make][:install_dir]}"
   not_if "drush | grep make"

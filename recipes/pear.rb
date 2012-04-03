@@ -17,7 +17,27 @@
 #
 
 include_recipe "php"
+
 # Upgrade PEAR if current version is < 1.9.1
-include_recipe "_upgrade_pear"
-include_recipe "_install_console_table"
-include_recipe "drush::#{node['drush']['install_method']}"
+php_pear "pear" do
+  cur_version = `pear -V| head -1| awk -F': ' '{print $2}'`
+  action :upgrade
+  not_if { Gem::Version.new(cur_version) > Gem::Version.new('1.9.0') }
+end
+
+# Initialize drush PEAR channel
+dc = php_pear_channel "pear.drush.org" do
+  action :discover
+end
+
+# Install drush
+php_pear "drush" do
+  version node[:drush][:version]
+  channel dc.channel_name
+  action :install
+end
+
+# Install Console_Table
+php_pear "Console_Table" do
+  action :install
+end

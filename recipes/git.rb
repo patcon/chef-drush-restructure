@@ -1,6 +1,6 @@
 # Author:: Mark Sonnabaum <mark.sonnabaum@acquia.com>
 # Cookbook Name:: drush
-# Recipe:: dev
+# Recipe:: git
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ case node[:platform]
 when "debian", "ubuntu", "centos"
   git "/usr/share/drush" do
     repository "git://git.drupalcode.org/project/drush.git"
-    reference "master"
+    reference node['drush']['version']
     action :sync
   end
   

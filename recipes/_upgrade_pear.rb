@@ -1,7 +1,7 @@
 # 
 # Author:: Mark Sonnabaum <mark.sonnabaum@acquia.com>
 # Cookbook Name:: drush
-# Recipe:: default
+# Recipe:: _upgrade_pear
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,9 @@
 # limitations under the License.
 #
 
-include_recipe "php"
 # Upgrade PEAR if current version is < 1.9.1
-include_recipe "_upgrade_pear"
-include_recipe "_install_console_table"
-include_recipe "drush::#{node['drush']['install_method']}"
+php_pear "pear" do
+  cur_version = `pear -V| head -1| awk -F': ' '{print $2}'`
+  action :upgrade
+  not_if { Gem::Version.new(cur_version) > Gem::Version.new('1.9.0') }
+end
